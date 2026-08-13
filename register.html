@@ -96,6 +96,13 @@
         .back-link a:hover {
             text-decoration: underline;
         }
+
+        #message {
+            text-align: center;
+            font-size: 0.85rem;
+            min-height: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -108,12 +115,13 @@
         <input type="password" id="regPassword" placeholder="Password">
         
         <select id="regClass">
-            <option value="Warrior">Warrior (Balanced)</option>
-            <option value="Mage">Mage (High Magic)</option>
-            <option value="Rogue">Rogue (High Speed)</option>
+            <option value="D-Rank Fighter">D-Rank Fighter (Melee)</option>
+            <option value="D-Rank Healer">D-Rank Healer (Support)</option>
+            <option value="D-Rank Thief">D-Rank Thief (Stealth)</option>
         </select>
 
-        <button onclick="submitRegistration()">Register Account</button>
+        <button onclick="submitRegistration()" id="regBtn">Register Account</button>
+        <div id="message"></div>
         
         <div class="back-link">
             <a href="index.html">← Back to Login</a>
@@ -121,19 +129,60 @@
     </div>
 
     <script>
+        let ws;
+
         function submitRegistration() {
-            const username = document.getElementById('regUsername').value;
+            const username = document.getElementById('regUsername').value.trim();
             const password = document.getElementById('regPassword').value;
             const heroClass = document.getElementById('regClass').value;
+            const msgBox = document.getElementById('message');
+            const regBtn = document.getElementById('regBtn');
 
             if(!username || !password) {
-                alert("Please fill in both your hero name and password!");
+                msgBox.style.color = "#ef4444";
+                msgBox.innerText = "Please fill in all fields!";
                 return;
             }
 
-            // Hook this up to your backend websocket or fetch API endpoint later
-            alert(`Account for ${username} (${heroClass}) registered successfully! Redirecting to login...`);
-            window.location.href = 'index.html';
+            msgBox.style.color = "#facc15";
+            msgBox.innerText = "Connecting to server...";
+            regBtn.disabled = true;
+
+            ws = new WebSocket((window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host);
+
+            ws.onopen = () => {
+                ws.send(JSON.stringify({ 
+                    action: 'register', 
+                    username: username, 
+                    password: password, 
+                    heroClass: heroClass 
+                }));
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+
+                if (data.type === 'reg_response') {
+                    if (data.status === 'exists') {
+                        msgBox.style.color = "#ef4444";
+                        msgBox.innerText = "username already exist";
+                        regBtn.disabled = false;
+                        ws.close();
+                    } else if (data.status === 'success') {
+                        msgBox.style.color = "#22c55e";
+                        msgBox.innerText = "register successful";
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 4000);
+                    }
+                }
+            };
+
+            ws.onerror = () => {
+                msgBox.style.color = "#ef4444";
+                msgBox.innerText = "Connection error to server.";
+                regBtn.disabled = false;
+            };
         }
     </script>
 </body>
