@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Text AQW: Private Server</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=MedievalSharp&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+        body { 
+            font-family: 'Cinzel', serif; 
+            background: #09090b url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed; 
+            background-size: cover;
+            color: #d4d4d8; 
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 8, 0.85);
+            z-index: -1;
+        }
+        h2 { 
+            font-family: 'MedievalSharp', cursive;
+            color: #facc15; 
+            margin: 5px 0; 
+            font-size: 1.5rem; 
+            text-align: center; 
+            text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
+            letter-spacing: 1px;
+        }
+        #register-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            width: 100%; 
+            max-width: 340px; 
+            background: rgba(18, 18, 24, 0.9);
+            border: 2px solid #3b82f6;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+        }
+        input, select, button { 
+            padding: 12px; 
+            border-radius: 6px; 
+            font-size: 0.9rem; 
+            font-family: 'Cinzel', serif;
+            border: none; 
+            width: 100%;
+        }
+        input, select { 
+            background: #09090b; 
+            color: #facc15; 
+            border: 1px solid #1e3a8a; 
+            text-align: center; 
+        }
+        input:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 8px rgba(59, 130, 246, 0.4); }
+        
+        button { 
+            background: linear-gradient(to bottom, #1e3a8a, #172554); 
+            color: #ffffff; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            border: 1px solid #3b82f6;
+            transition: all 0.2s;
+        }
+        button:hover { background: linear-gradient(to bottom, #2563eb, #1d4ed8); box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); }
+        button:active { transform: scale(0.98); }
+
+        .back-link {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+        .back-link a {
+            color: #facc15;
+            text-decoration: none;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="register-container">
+        <h2>Create Hero</h2>
+        <p style="text-align: center; font-size: 0.75rem; color: #a1a1aa; margin: 0;">Forge your legacy in the private server database.</p>
+        
+        <input type="text" id="regUsername" placeholder="Hero Name">
+        <input type="password" id="regPassword" placeholder="Password">
+        
+        <select id="regClass">
+            <option value="Warrior">Warrior (Balanced)</option>
+            <option value="Mage">Mage (High Magic)</option>
+            <option value="Rogue">Rogue (High Speed)</option>
+        </select>
+
+        <button onclick="submitRegistration()">Register Account</button>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Login</a>
+        </div>
+    </div>
+
+    <script>
+        function submitRegistration() {
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const heroClass = document.getElementById('regClass').value;
+
+            if(!username || !password) {
+                alert("Please fill in both your hero name and password!");
+                return;
+            }
+
+            // Hook this up to your backend websocket or fetch API endpoint later
+            alert(`Account for ${username} (${heroClass}) registered successfully! Redirecting to login...`);
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
