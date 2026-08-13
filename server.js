@@ -26,7 +26,7 @@ db.run(`CREATE TABLE IF NOT EXISTS players (
     location TEXT DEFAULT 'Battleon Town'
 )`);
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 wss.on('connection', (ws) => {
     let dbPlayerId = null;
