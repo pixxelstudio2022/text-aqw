@@ -132,7 +132,7 @@
         <input type="text" id="usernameInput" placeholder="Hero Name">
         <div class="login-buttons">
             <button onclick="login()">Login to Server</button>
-            <button class="register-btn" onclick="registerHero()">Register New Hero</button>
+            <button class="register-btn" onclick="window.location.href='register.html'">Register New Hero</button>
         </div>
     </div>
 
@@ -172,12 +172,6 @@
                     statsBox.innerHTML = `<b>Hero:</b> ${data.player.username} &nbsp;|&nbsp; <b>HP:</b> <span style="color:#ef4444">${data.player.hp}/${data.player.max_hp}</span> &nbsp;|&nbsp; <b>Gold:</b> <span style="color:#facc15">${data.player.gold}g</span>`;
                 }
             };
-        }
-
-        function registerHero() {
-            const username = document.getElementById('usernameInput').value;
-            if(!username) return alert("Please type a new hero name to register first!");
-            login();
         }
 
         function sendAction(action) {
