@@ -3,37 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text AQW Mobile</title>
+    <title>Text AQW: Private Server</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=MedievalSharp&display=swap" rel="stylesheet">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 15px; display: flex; flex-direction: column; height: 88vh; }
-        h2 { color: #bb86fc; margin-top: 0; font-size: 1.2rem; text-align: center; }
-        #login-screen { display: flex; flex-direction: column; gap: 10px; margin: auto; width: 100%; max-width: 300px; }
-        #game-screen { display: none; flex-direction: column; height: 100%; }
-        #stats { background: #1e1e1e; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; text-align: center; }
-        #log { flex: 1; background: #1e1e1e; padding: 10px; border-radius: 8px; overflow-y: scroll; font-family: monospace; font-size: 0.85rem; margin-bottom: 15px; border: 1px solid #333; }
-        .controls { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        input, button { padding: 15px; border-radius: 8px; font-size: 1rem; border: none; }
-        input { background: #222; color: white; border: 1px solid #444; text-align: center; }
-        button { background: #3700b3; color: white; font-weight: bold; cursor: pointer; }
-        button:active { background: #6200ee; }
+        body { 
+            font-family: 'Cinzel', serif; 
+            background: #09090b url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed; 
+            background-size: cover;
+            color: #d4d4d8; 
+            margin: 0; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            height: 92vh; 
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 5, 8, 0.85);
+            z-index: -1;
+        }
+        h2 { 
+            font-family: 'MedievalSharp', cursive;
+            color: #facc15; 
+            margin: 5px 0; 
+            font-size: 1.6rem; 
+            text-align: center; 
+            text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
+            letter-spacing: 1px;
+        }
+        #login-screen { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            margin: auto; 
+            width: 100%; 
+            max-width: 340px; 
+            background: rgba(18, 18, 24, 0.9);
+            border: 2px solid #ca8a04;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(202, 138, 4, 0.3);
+        }
+        #game-screen { display: none; flex-direction: column; height: 100%; max-width: 600px; margin: 0 auto; width: 100%; }
+        
+        #stats { 
+            background: rgba(18, 18, 24, 0.9); 
+            border: 1px solid #ca8a04;
+            padding: 12px; 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            font-size: 0.9rem; 
+            text-align: center; 
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+        #stats b { color: #facc15; }
+
+        #log { 
+            flex: 1; 
+            background: rgba(10, 10, 15, 0.95); 
+            padding: 12px; 
+            border-radius: 8px; 
+            overflow-y: scroll; 
+            font-family: monospace; 
+            font-size: 0.85rem; 
+            margin-bottom: 12px; 
+            border: 1px solid #3f3f46; 
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
+        }
+        #log div { margin-bottom: 6px; border-bottom: 1px dashed #27272a; padding-bottom: 4px; }
+
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        input, button { 
+            padding: 14px; 
+            border-radius: 6px; 
+            font-size: 0.95rem; 
+            font-family: 'Cinzel', serif;
+            border: none; 
+        }
+        input { 
+            background: #09090b; 
+            color: #facc15; 
+            border: 1px solid #713f12; 
+            text-align: center; 
+        }
+        input:focus { outline: none; border-color: #facc15; box-shadow: 0 0 8px rgba(250, 204, 21, 0.4); }
+        
+        button { 
+            background: linear-gradient(to bottom, #ca8a04, #854d0e); 
+            color: #ffffff; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            border: 1px solid #facc15;
+            transition: all 0.2s;
+        }
+        button:hover { background: linear-gradient(to bottom, #eab308, #a16207); box-shadow: 0 0 10px rgba(234, 179, 8, 0.6); }
+        button:active { transform: scale(0.98); }
+        .full-width { grid-column: span 2; }
     </style>
 </head>
 <body>
 
     <!-- Login Screen -->
     <div id="login-screen">
-        <h2>Text AQW: Pocket</h2>
-        <input type="text" id="usernameInput" placeholder="Enter Your Hero Name">
-        <button onclick="login()">Enter World</button>
+        <h2>AQW: Pocket Realm</h2>
+        <p style="text-align: center; font-size: 0.8rem; color: #a1a1aa; margin: 0;">Enter your hero designation to enter the private server.</p>
+        <input type="text" id="usernameInput" placeholder="Hero Name">
+        <button onclick="login()">Login to Server</button>
     </div>
 
     <!-- Game Screen -->
     <div id="game-screen">
-        <h2>Text AQW: Pocket Edition</h2>
-        <div id="stats">Loading stats...</div>
+        <h2>AQW: Pocket Realm</h2>
+        <div id="stats">Connecting to database...</div>
         <div id="log"></div>
         <div class="controls">
-            <button onclick="sendAction('fight')">Attack Monster (+10 Gold)</button>
+            <button onclick="sendAction('fight')" class="full-width">⚔️ Battle Skeleton (+10 Gold)</button>
         </div>
     </div>
 
@@ -44,7 +132,7 @@
 
         function login() {
             const username = document.getElementById('usernameInput').value;
-            if(!username) return alert("Please enter a name!");
+            if(!username) return alert("Please enter a hero name!");
 
             ws = new WebSocket((window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host);
 
@@ -60,7 +148,7 @@
                     logBox.innerHTML += `<div>> ${data.text}</div>`;
                     logBox.scrollTop = logBox.scrollHeight;
                 } else if (data.type === 'update' || data.type === 'init') {
-                    statsBox.innerHTML = `<b>Hero:</b> ${data.player.username} | <b>HP:</b> ${data.player.hp}/${data.player.max_hp} | <b>Gold:</b> ${data.player.gold}g`;
+                    statsBox.innerHTML = `<b>Hero:</b> ${data.player.username} &nbsp;|&nbsp; <b>HP:</b> <span style="color:#ef4444">${data.player.hp}/${data.player.max_hp}</span> &nbsp;|&nbsp; <b>Gold:</b> <span style="color:#facc15">${data.player.gold}g</span>`;
                 }
             };
         }
