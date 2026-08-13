@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text AQW Mobile</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 15px; display: flex; flex-direction: column; height: 88vh; }
+        h2 { color: #bb86fc; margin-top: 0; font-size: 1.2rem; text-align: center; }
+        #login-screen { display: flex; flex-direction: column; gap: 10px; margin: auto; width: 100%; max-width: 300px; }
+        #game-screen { display: none; flex-direction: column; height: 100%; }
+        #stats { background: #1e1e1e; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.85rem; text-align: center; }
+        #log { flex: 1; background: #1e1e1e; padding: 10px; border-radius: 8px; overflow-y: scroll; font-family: monospace; font-size: 0.85rem; margin-bottom: 15px; border: 1px solid #333; }
+        .controls { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        input, button { padding: 15px; border-radius: 8px; font-size: 1rem; border: none; }
+        input { background: #222; color: white; border: 1px solid #444; text-align: center; }
+        button { background: #3700b3; color: white; font-weight: bold; cursor: pointer; }
+        button:active { background: #6200ee; }
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <h2>Text AQW: Pocket</h2>
+        <input type="text" id="usernameInput" placeholder="Enter Your Hero Name">
+        <button onclick="login()">Enter World</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen">
+        <h2>Text AQW: Pocket Edition</h2>
+        <div id="stats">Loading stats...</div>
+        <div id="log"></div>
+        <div class="controls">
+            <button onclick="sendAction('fight')">Attack Monster (+10 Gold)</button>
+        </div>
+    </div>
+
+    <script>
+        let ws;
+        const logBox = document.getElementById('log');
+        const statsBox = document.getElementById('stats');
+
+        function login() {
+            const username = document.getElementById('usernameInput').value;
+            if(!username) return alert("Please enter a name!");
+
+            ws = new WebSocket((window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host);
+
+            ws.onopen = () => {
+                ws.send(JSON.stringify({ action: 'login', username: username }));
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('game-screen').style.display = 'flex';
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.type === 'log') {
+                    logBox.innerHTML += `<div>> ${data.text}</div>`;
+                    logBox.scrollTop = logBox.scrollHeight;
+                } else if (data.type === 'update' || data.type === 'init') {
+                    statsBox.innerHTML = `<b>Hero:</b> ${data.player.username} | <b>HP:</b> ${data.player.hp}/${data.player.max_hp} | <b>Gold:</b> ${data.player.gold}g`;
+                }
+            };
+        }
+
+        function sendAction(action) {
+            if(ws) ws.send(JSON.stringify({ action: action }));
+        }
+    </script>
+</body>
+</html>
