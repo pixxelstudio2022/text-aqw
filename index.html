@@ -6,24 +6,27 @@
     <title>Text AQW: Private Server</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=MedievalSharp&display=swap" rel="stylesheet">
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
         body { 
             font-family: 'Cinzel', serif; 
             background: #09090b url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed; 
             background-size: cover;
             color: #d4d4d8; 
-            margin: 0; 
             padding: 10px; 
             display: flex; 
             flex-direction: column; 
-            height: 92vh; 
+            box-sizing: border-box;
         }
         body::before {
             content: "";
             position: fixed;
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
+            inset: 0;
             background: rgba(5, 5, 8, 0.85);
             z-index: -1;
         }
